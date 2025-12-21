@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Timers;
-using UnityEngine;
-using VNyanInterface;
 using VRCFTnyan.Osc;
 
 namespace VRCFTnyan
 {
     public class VRCFTnyan {
-        static VrcOscReceiver _receiver = new VrcOscReceiver();
-        static System.Timers.Timer _timer = new System.Timers.Timer(1000);
+        // static VrcOscReceiver _receiver = new VrcOscReceiver();
         static Makaretu.Dns.ServiceProfile service;
         static Makaretu.Dns.ServiceDiscovery serviceDiscovery;
-        static bool IsStop;
-        static bool Running = false;
-        public static bool EnableEyes = false;
-        public static bool EnableMouth = true;
-        public static int fps = 60;
+        // static bool IsStop;
+        // static bool Running = false;
+        // public static bool EnableEyes = false;
+        // public static bool EnableMouth = true;
+        // public static int fps = 60;
+        // private static System.Timers.Timer FrameTimer = new System.Timers.Timer();
 
         static int VRCFTPort = 9000;
         static string VRCFTAddress = "127.0.0.1";
@@ -33,76 +32,63 @@ namespace VRCFTnyan
             Console.WriteLine("[VRCFT] "+message);
         }
 
-        public static void Start() {
-            Log("Init");
-            _Init();
-            System.Threading.Thread.Sleep(2000);
-            Log("Start");
-            _Start();
-            Running = true;
-
-            int _span = (int)(1000d / fps);
-            _timer = new System.Timers.Timer(_span);
-            _timer.AutoReset = true;
-            _timer.Elapsed += new ElapsedEventHandler(Timer_Elapsed);
-            //_timer.Start();
-        }
-
+        /*
         private static void Timer_Elapsed(object? sender, ElapsedEventArgs e) {
             UpdateVNyanBlendshapes.UpdateBlendshapes();
         }
+        */
 
-        public static void Stop() {
-            Log("Already running, shutting down avatar");
-            Log("Stop");
-            _Stop();
-            System.Threading.Thread.Sleep(2000);
-            Log("Cleanup");
-            _Cleanup();
-            Running = false;
-        }
+        public static void Main(string[] args) {
+            if (args.Count() >= 1) {
+                Log("Init");
+                Init();
+                if (args[0] == "START") {
+                    
 
-        public static void Main() {
-            UpdateVNyanBlendshapes.InitialiseMMF();
-            Start();
-            while (true) {
-                UpdateVNyanBlendshapes.UpdateBlendshapes();
-                System.Threading.Thread.Sleep(1000 / fps);
+                    Log("Start");
+                    Start();
+                } else {
+                    Log("Stop");
+                    Stop();
+                }
+                System.Threading.Thread.Sleep(4000);
+                Cleanup();
+            } else {
+                Log("Please specify START or STOP on the commandline");
             }
-            Console.ReadLine();
-            Stop();
         }
 
-        private static void _Start() {
+        private static void Start() {
             try {
+                // Running = true;
                 VRChat.CreateVRCAvatarFile("avtr_00000000-0000-0000-0000-000000000000.json");
                 VRChat.CreateVRCAvatarFile("avtr_00000000-0000-0000-0000-000000000001.json");
 
-                _receiver.Start(port: VRCFTPort);
+                // _receiver.Start(port: VRCFTPort);
 
                 OscJsonServer.TrackingEnable = true;
                 SendAvatarChange("avtr_00000000-0000-0000-0000-000000000001");
 
-                _timer.AutoReset = true;
-                _timer.Start();
-                IsStop = false;
+                // FrameTimer.Start();
+                // IsStop = false;
             } catch (Exception ex) {
                 Log($"{DateTime.Now}: Start Failed. [{ex.Message}]");
-                _receiver.Stop();
-                _timer.Stop();
+                // _receiver.Stop();
+                // FrameTimer.Stop();
             }
         }
 
-        private static void _Stop() {
+        private static void Stop() {
             try {
                 OscJsonServer.TrackingEnable = false;
                 SendAvatarChange("avtr_00000000-0000-0000-0000-000000000000");
             } catch (Exception) {
                 //
             }
-            _receiver.Stop();
-            _timer.Stop();
-            IsStop = true;
+            // _receiver.Stop();
+            // FrameTimer.Stop();
+            // IsStop = true;
+            // Running = false;
         }
 
         static async void SendAvatarChange(string id) {
@@ -121,7 +107,7 @@ namespace VRCFTnyan
             }
         }
 
-        private static void _Init() {
+        private static void Init() {
             Log("Starting JSON server on port 61891");
             int port = OscJsonServer.Start(61891);
             Log("Creating Service");
@@ -141,18 +127,15 @@ namespace VRCFTnyan
             serviceDiscovery.Announce(service);
         }
 
-        private static void _Cleanup() {
-            if (!IsStop) {
-                _Stop();
-            }
-
+        private static void Cleanup() {
+            // _receiver.Stop();
             serviceDiscovery.Unadvertise(service);
             serviceDiscovery.Dispose();
             OscJsonServer.Stop();
         }
 
     }
-    internal class DynamicSharedParameter {
+    /* internal class DynamicSharedParameter {
         private static readonly object _LockObject = new object();
         private static bool _EyeTargetPositionUse = true;
         private static int _EyeTargetPositionMultiplierUp = 100;
@@ -234,9 +217,9 @@ namespace VRCFTnyan
                 }
             }
         }
-    }
+    } */
 
-    internal static class MessageCount {
+    /* internal static class MessageCount {
         private static readonly object _LockObjectVRCFT2ThisApp = new object();
         private static readonly object _LockObjectThisApp2VRCFT = new object();
         private static readonly object _LockObjectThisApp2VMC = new object();
@@ -303,5 +286,6 @@ namespace VRCFTnyan
             _CountThisApp2VRCFT = 0;
             _CountThisApp2VMC = 0;
         }
-    }
+    } */
 }
+    

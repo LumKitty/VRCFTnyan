@@ -1,4 +1,4 @@
-﻿using System;
+﻿/* using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -42,7 +42,7 @@ namespace VRCFTnyan
                 try
                 {
                     var buffer = udpClient.Receive(ref endPoint);
-                    MessageCount.CountUpVRCFT2ThisApp();
+                    // MessageCount.CountUpVRCFT2ThisApp();
                     int pos = 0;
                     _parser.Parse(buffer, ref pos, buffer.Length);
                     while (_parser.messageCount > 0)
@@ -63,3 +63,4 @@ namespace VRCFTnyan
         }
     }
 }
+*/

@@ -14,7 +14,7 @@ namespace VRCFTnyan
         public static void CreateVRCAvatarFile(string filename)
         {
             string jsonText = ResourceString(filename);
-            VRCFTnyan.Log("JSON: " + jsonText);
+            // VRCFTnyan.Log("JSON: " + jsonText);
             string vrcAvatarsFolder = VRCAvatarsFolder();
             if (jsonText.Length > 0 && vrcAvatarsFolder.Length > 0)
             {
