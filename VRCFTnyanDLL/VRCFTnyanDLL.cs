@@ -22,6 +22,8 @@ namespace VRCFTnyanDLL {
 
         internal static bool EnableEyes = true;
         internal static bool EnableMouth = true;
+        internal static bool HideHelperWindow = true;
+        internal static int LogLevel = 1;
         internal static bool Active = false;
         private static Process ExternalExe;
         private static ProcessStartInfo StartInfo = new ProcessStartInfo();
@@ -60,7 +62,7 @@ namespace VRCFTnyanDLL {
                     StartInfo.RedirectStandardInput = true;
                     StartInfo.RedirectStandardOutput = false;
                     StartInfo.RedirectStandardError = false;
-                    StartInfo.CreateNoWindow = false;
+                    StartInfo.CreateNoWindow = HideHelperWindow;
                     StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
                 } else {
                     Log("EXE not found, disabling plugin");
@@ -80,6 +82,7 @@ namespace VRCFTnyanDLL {
                 if (settings != null) {
                     // Read string value
                     string tempSetting;
+                    int tempIntSetting;
 
                     if (settings.TryGetValue("EnableEyes", out tempSetting)) {
                         if (bool.Parse(tempSetting)) {
@@ -107,6 +110,33 @@ namespace VRCFTnyanDLL {
                         EnableMouth = true;
                         SettingMissing = true;
                     }
+                    if (settings.TryGetValue("LogLevel", out tempSetting)) {
+                        if (int.TryParse(tempSetting, out tempIntSetting)) {
+                            LogLevel = tempIntSetting;
+                            Log("Log level set to: "+LogLevel);
+                        } else {
+                            LogLevel = 1;
+                            SettingMissing = true;
+                            Log("Log level not readable, defaulting to 1");
+                        }
+                    } else {
+                        Log("Log level not found, defaulting to 1");
+                        LogLevel = 1;
+                        SettingMissing = true;
+                    }
+                    if (settings.TryGetValue("HideHelperWindow", out tempSetting)) {
+                        if (bool.Parse(tempSetting)) {
+                            HideHelperWindow = true;
+                            Log("Helper window will be hidden");
+                        } else {
+                            HideHelperWindow = false;
+                            Log("Helper window will be shown");
+                        }
+                    } else {
+                        Log("HideHelperWindow setting missing. Defaulting to hidden");
+                        HideHelperWindow = true;
+                        SettingMissing = true;
+                    }
 
                 } else {
                     Log("No settings file detected, using defaults");
@@ -125,6 +155,8 @@ namespace VRCFTnyanDLL {
             Dictionary<string, string> settings = new Dictionary<string, string>();
             settings["EnableEyes"] = EnableEyes.ToString();
             settings["EnableMouth"] = EnableMouth.ToString();
+            settings["LogLevel"] = LogLevel.ToString();
+            settings["HideHelperWindow"] = HideHelperWindow.ToString();
 
             VNyanInterface.VNyanInterface.VNyanSettings.saveSettings(SettingsFileName, settings);
         }
@@ -134,19 +166,14 @@ namespace VRCFTnyanDLL {
             ExternalExe.StartInfo = StartInfo;
             ExternalExe.StartInfo.Arguments = Param;
             ExternalExe.EnableRaisingEvents = true;
-            Log("Start process");
+            if (LogLevel >= 1) { Log("Start process: " + ExternalExe.StartInfo.FileName + " with parameter: " + ExternalExe.StartInfo.Arguments); }
             ExternalExe.Start();
-            
         }
-        
 
         public void triggerCalled(string name, int int1, int int2, int int3, string text1, string text2, string text3) {
             try {
-                Log(name);
                 if (name.Length > 11) {
-                    Log(name.Substring(0, 10).ToLower());
                     if (name.Substring(0, 10).ToLower() == "_lum_vrcft") {
-                        Log(name.Substring(10).ToLower());
                         switch (name.Substring(10).ToLower()) {
                             case "_start": StartTracking(); break;
                             case "_stop": StopTracking(); break;
@@ -188,8 +215,10 @@ namespace VRCFTnyanDLL {
 
         private static void UpdateVNyan(string BlendshapeName, float Value) {
             VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride(BlendshapeName, Value);
-            if (Value != 0) {
-                Log(BlendshapeName.PadRight(20, ' ') + ": " + Value.ToString());
+            if (LogLevel > 1) {
+                if (Value != 0 || LogLevel >= 69) {
+                    Log(BlendshapeName.PadRight(20, ' ') + ": " + Value.ToString());
+                }
             }
         }
         
@@ -197,7 +226,6 @@ namespace VRCFTnyanDLL {
         private float GetVNyanParam(string Name) {
             return Math.Clamp(VNyanInterface.VNyanInterface.VNyanParameter.getVNyanParameterFloat(Name), -1.0f, 1.0f);
         }
-
 
         public void Update() {
             if (EnableEyes) {
