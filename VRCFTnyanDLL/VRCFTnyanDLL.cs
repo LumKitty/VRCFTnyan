@@ -11,7 +11,7 @@ using static VRCFTnyanDLL.VRC2VMCFunctions;
 namespace VRCFTnyanDLL {
     public class VRCFTnyan : MonoBehaviour, IVNyanPluginManifest, IButtonClickedHandler, ITriggerHandler {
         public string PluginName { get; } = "VRCFTnyan";
-        public string Version { get; } = "0.3-beta";
+        public string Version { get; } = "0.4-beta";
         public string Title { get; } = "VRC Face Tracking for VNyan";
         public string Author { get; } = "LumKitty";
         public string Website { get; } = "https://lum.uk";
@@ -161,7 +161,7 @@ namespace VRCFTnyanDLL {
             VNyanInterface.VNyanInterface.VNyanSettings.saveSettings(SettingsFileName, settings);
         }
 
-        internal void LaunchEXEHelper(string Param) {
+        internal async void LaunchEXEHelper(string Param) {
             ExternalExe = new Process();
             ExternalExe.StartInfo = StartInfo;
             ExternalExe.StartInfo.Arguments = Param;
@@ -193,8 +193,9 @@ namespace VRCFTnyanDLL {
 
         private void StopTracking () {
             Active = false;
-            LaunchEXEHelper("STOP");
             objVRCFTnyan.SetActive(false);
+            FreeUpBlendshapes();
+            LaunchEXEHelper("STOP");
         }
         
         public void pluginButtonClicked() {
@@ -210,7 +211,7 @@ namespace VRCFTnyanDLL {
         }
 
         public void OnApplicationQuit() {
-            if (Active) { StopTracking(); }
+            if (Active) { LaunchEXEHelper("STOP"); }
         }
 
         private static void UpdateVNyan(string BlendshapeName, float Value) {
@@ -221,69 +222,134 @@ namespace VRCFTnyanDLL {
                 }
             }
         }
-        
+
+        private static void FreeUpBlendshapes() {
+            if (EnableEyes) {
+                Log("Freeing up eye blendshapes");
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("BrowDownLeft", 0);
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("BrowDownRight", 0);
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("BrowInnerUp", 0);  
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("BrowOuterUpLeft", 0);  
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("BrowOuterUpRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("CheekPuff", 0);    
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("CheekSquintLeft", 0);  
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("CheekSquintRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeBlinkLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeBlinkRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookDownLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookDownRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookInLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookInRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookOutLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookOutRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookUpLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookUpRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeSquintLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeSquintRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeWideLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeWideRight", 0); 
+            }
+            if (EnableMouth) {
+                Log("Freeing up mouth blendshapes");
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("JawForward", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("JawLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("JawOpen", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("JawRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthClose", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthDimpleLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthDimpleRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthFrownLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthFrownRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthFunnel", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthLowerDownLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthLowerDownRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthPressLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthPressRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthPucker", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthRollUpper", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthRollLower", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthShrugUpper", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthShrugLower", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthSmileLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthSmileRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthStretchLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthStretchRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthUpperUpLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthUpperUpRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("NoseSneerLeft", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("NoseSneerRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("TongueOut", 0); 
+            }
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private float GetVNyanParam(string Name) {
             return Math.Clamp(VNyanInterface.VNyanInterface.VNyanParameter.getVNyanParameterFloat(Name), -1.0f, 1.0f);
         }
 
         public void Update() {
-            if (EnableEyes) {
-                float CheekPuffSuck = GetVNyanParam("CheekPuffSuck");
-                UpdateVNyan("BrowDownLeft", GetVNyanParam("v2/browdownleft"));
-                UpdateVNyan("BrowDownRight", GetVNyanParam("v2/browdownright")); //
-                UpdateVNyan("BrowInnerUp", GetVNyanParam("v2/browinnerup")); //_weights[VRCFTParametersV2.BrowInnerUp]);
-                UpdateVNyan("BrowOuterUpLeft", GetVNyanParam("v2/browouterupleft")); //_weights[VRCFTParametersV2.BrowOuterUpLeft]);
-                UpdateVNyan("BrowOuterUpRight", GetVNyanParam("v2/browouterupright")); //_weights[VRCFTParametersV2.BrowOuterUpRight]);
-                UpdateVNyan("CheekPuff", CheekPuffSuck > 0 ? CheekPuffSuck : 0f); //_weights[VRCFTParametersV2.CheekPuffSuck] > 0 ? _weights[VRCFTParametersV2.CheekPuffSuck] : 0f);
-                UpdateVNyan("CheekSquintLeft", GetVNyanParam("v2/cheeksquintleft")); //_weights[VRCFTParametersV2.CheekSquintLeft]);
-                UpdateVNyan("CheekSquintRight", GetVNyanParam("v2/cheeksquintright")); //_weights[VRCFTParametersV2.CheekSquintRight]);
-                UpdateVNyan("EyeBlinkLeft", EyeBlink(GetVNyanParam("v2/eyelidleft"))); //EyeBlink(_weights[VRCFTParametersV2.EyeLidLeft]));
-                UpdateVNyan("EyeBlinkRight", EyeBlink(GetVNyanParam("v2/eyelidright"))); //EyeBlink(_weights[VRCFTParametersV2.EyeLidRight]));
-                UpdateVNyan("EyeLookDownLeft", MoveDown(GetVNyanParam("v2/eyelefty"))); //MoveDown(_weights[VRCFTParametersV2.EyeLeftY]));
-                UpdateVNyan("EyeLookDownRight", MoveDown(GetVNyanParam("v2/eyerighty"))); //MoveDown(_weights[VRCFTParametersV2.EyeRightY]));
-                UpdateVNyan("EyeLookInLeft", MoveRight(GetVNyanParam("v2/eyeleftx"))); //MoveRight(_weights[VRCFTParametersV2.EyeLeftX])); // LeftEye LookRight
-                UpdateVNyan("EyeLookInRight", MoveLeft(GetVNyanParam("v2/eyerightx"))); //MoveLeft(_weights[VRCFTParametersV2.EyeRightX])); // RightEye LookLeft
-                UpdateVNyan("EyeLookOutLeft", MoveLeft(GetVNyanParam("v2/eyeleftx"))); //MoveLeft(_weights[VRCFTParametersV2.EyeLeftX])); // LeftEye LookLeft
-                UpdateVNyan("EyeLookOutRight", MoveRight(GetVNyanParam("v2/eyerightx"))); //MoveRight(_weights[VRCFTParametersV2.EyeRightX])); // RightEye LookRight
-                UpdateVNyan("EyeLookUpLeft", MoveUp(GetVNyanParam("v2/eyelefty"))); //MoveUp(_weights[VRCFTParametersV2.EyeLeftY]));
-                UpdateVNyan("EyeLookUpRight", MoveUp(GetVNyanParam("v2/eyerighty"))); //MoveUp(_weights[VRCFTParametersV2.EyeRightY]));
-                UpdateVNyan("EyeSquintLeft", GetVNyanParam("v2/eyesquintleft")); //_weights[VRCFTParametersV2.EyeSquintLeft]);
-                UpdateVNyan("EyeSquintRight", GetVNyanParam("v2/eyesquintright")); //_weights[VRCFTParametersV2.EyeSquintRight]);
-                UpdateVNyan("EyeWideLeft", EyeWide(GetVNyanParam("v2/eyelidleft"))); //EyeWide(_weights[VRCFTParametersV2.EyeLidLeft]));
-                UpdateVNyan("EyeWideRight", EyeWide(GetVNyanParam("v2/eyelidright"))); //EyeWide(_weights[VRCFTParametersV2.EyeLidRight]));
-            }
-            if (EnableMouth) {
-                UpdateVNyan("JawForward", MoveForward(GetVNyanParam("v2/jawz"))); //MoveForward(_weights[VRCFTParametersV2.JawZ]));
-                UpdateVNyan("JawLeft", MoveLeft(GetVNyanParam("v2/jawx"))); //MoveLeft(_weights[VRCFTParametersV2.JawX]));
-                UpdateVNyan("JawOpen", GetVNyanParam("v2/jawopen")); //_weights[VRCFTParametersV2.JawOpen]);
-                UpdateVNyan("JawRight", MoveRight(GetVNyanParam("v2/jawx"))); //MoveRight(_weights[VRCFTParametersV2.JawX]));
-                UpdateVNyan("MouthClose", GetVNyanParam("v2/mouthclosed")); //_weights[VRCFTParametersV2.MouthClosed]);
-                UpdateVNyan("MouthDimpleLeft", GetVNyanParam("v2/mouthdimpleleft")); //_weights[VRCFTParametersV2.MouthDimpleLeft]);
-                UpdateVNyan("MouthDimpleRight", GetVNyanParam("v2/mouthdimpleright")); //_weights[VRCFTParametersV2.MouthDimpleRight]);
-                UpdateVNyan("MouthFrownLeft", GetVNyanParam("v2/mouthfrownleft")); //_weights[VRCFTParametersV2.MouthFrownLeft]);
-                UpdateVNyan("MouthFrownRight", GetVNyanParam("v2/mouthfrownright")); //_weights[VRCFTParametersV2.MouthFrownRight]);
-                UpdateVNyan("MouthFunnel", GetVNyanParam("v2/lipfunnel")); //_weights[VRCFTParametersV2.LipFunnel]);
-                UpdateVNyan("MouthLeft", MoveLeft(GetVNyanParam("v2/mouthx"))); //MoveLeft(_weights[VRCFTParametersV2.MouthX]));
-                UpdateVNyan("MouthLowerDownLeft", GetVNyanParam("v2/mouthlowerdownleft")); //_weights[VRCFTParametersV2.MouthLowerDownLeft]);
-                UpdateVNyan("MouthLowerDownRight", GetVNyanParam("v2/mouthlowerdownright")); //_weights[VRCFTParametersV2.MouthLowerDownRight]);
-                UpdateVNyan("MouthPressLeft", GetVNyanParam("v2/mouthpressleft")); //_weights[VRCFTParametersV2.MouthPressLeft]);
-                UpdateVNyan("MouthPressRight", GetVNyanParam("v2/mouthpressright")); //_weights[VRCFTParametersV2.MouthPressRight]);
-                UpdateVNyan("MouthPucker", GetVNyanParam("v2/lippucker")); //_weights[VRCFTParametersV2.LipPucker]);
-                UpdateVNyan("MouthRight", MoveRight(GetVNyanParam("v2/mouthx"))); //MoveRight(_weights[VRCFTParametersV2.MouthX]));
-                UpdateVNyan("MouthRollUpper", GetVNyanParam("v2/lipsuckupper")); //_weights[VRCFTParametersV2.LipSuckUpper]);
-                UpdateVNyan("MouthRollLower", GetVNyanParam("v2/lipsucklower")); //_weights[VRCFTParametersV2.LipSuckLower]);
-                UpdateVNyan("MouthShrugUpper", GetVNyanParam("v2/mouthraiserupper")); //_weights[VRCFTParametersV2.MouthRaiserUpper]);
-                UpdateVNyan("MouthShrugLower", GetVNyanParam("v2/mouthraiserlower")); //_weights[VRCFTParametersV2.MouthRaiserLower]);
-                UpdateVNyan("MouthSmileLeft", GetVNyanParam("v2/mouthcornerpullleft")); //_weights[VRCFTParametersV2.MouthCornerPullLeft]);
-                UpdateVNyan("MouthSmileRight", GetVNyanParam("v2/mouthcornerpullright")); //_weights[VRCFTParametersV2.MouthCornerPullRight]);
-                UpdateVNyan("MouthStretchLeft", GetVNyanParam("v2/mouthstretchleft")); //_weights[VRCFTParametersV2.MouthStretchLeft]);
-                UpdateVNyan("MouthStretchRight", GetVNyanParam("v2/mouthstretchright")); //_weights[VRCFTParametersV2.MouthStretchRight]);
-                UpdateVNyan("MouthUpperUpLeft", GetVNyanParam("v2/mouthupperupleft")); //_weights[VRCFTParametersV2.MouthUpperUpLeft]);
-                UpdateVNyan("MouthUpperUpRight", GetVNyanParam("v2/mouthupperupright")); //_weights[VRCFTParametersV2.MouthUpperUpRight]);
-                UpdateVNyan("NoseSneerLeft", GetVNyanParam("v2/nosesneerleft")); //_weights[VRCFTParametersV2.NoseSneerLeft]);
-                UpdateVNyan("NoseSneerRight", GetVNyanParam("v2/nosesneerright")); //_weights[VRCFTParametersV2.NoseSneerRight]);
-                UpdateVNyan("TongueOut", GetVNyanParam("v2/tongueout")); //_weights[VRCFTParametersV2.TongueOut]);
+            if (Active) {
+                if (EnableEyes) {
+                    float CheekPuffSuck = GetVNyanParam("CheekPuffSuck");
+                    UpdateVNyan("BrowDownLeft", GetVNyanParam("v2/browdownleft"));
+                    UpdateVNyan("BrowDownRight", GetVNyanParam("v2/browdownright")); //
+                    UpdateVNyan("BrowInnerUp", GetVNyanParam("v2/browinnerup")); //_weights[VRCFTParametersV2.BrowInnerUp]);
+                    UpdateVNyan("BrowOuterUpLeft", GetVNyanParam("v2/browouterupleft")); //_weights[VRCFTParametersV2.BrowOuterUpLeft]);
+                    UpdateVNyan("BrowOuterUpRight", GetVNyanParam("v2/browouterupright")); //_weights[VRCFTParametersV2.BrowOuterUpRight]);
+                    UpdateVNyan("CheekPuff", CheekPuffSuck > 0 ? CheekPuffSuck : 0f); //_weights[VRCFTParametersV2.CheekPuffSuck] > 0 ? _weights[VRCFTParametersV2.CheekPuffSuck] : 0f);
+                    UpdateVNyan("CheekSquintLeft", GetVNyanParam("v2/cheeksquintleft")); //_weights[VRCFTParametersV2.CheekSquintLeft]);
+                    UpdateVNyan("CheekSquintRight", GetVNyanParam("v2/cheeksquintright")); //_weights[VRCFTParametersV2.CheekSquintRight]);
+                    UpdateVNyan("EyeBlinkLeft", EyeBlink(GetVNyanParam("v2/eyelidleft"))); //EyeBlink(_weights[VRCFTParametersV2.EyeLidLeft]));
+                    UpdateVNyan("EyeBlinkRight", EyeBlink(GetVNyanParam("v2/eyelidright"))); //EyeBlink(_weights[VRCFTParametersV2.EyeLidRight]));
+                    UpdateVNyan("EyeLookDownLeft", MoveDown(GetVNyanParam("v2/eyelefty"))); //MoveDown(_weights[VRCFTParametersV2.EyeLeftY]));
+                    UpdateVNyan("EyeLookDownRight", MoveDown(GetVNyanParam("v2/eyerighty"))); //MoveDown(_weights[VRCFTParametersV2.EyeRightY]));
+                    UpdateVNyan("EyeLookInLeft", MoveRight(GetVNyanParam("v2/eyeleftx"))); //MoveRight(_weights[VRCFTParametersV2.EyeLeftX])); // LeftEye LookRight
+                    UpdateVNyan("EyeLookInRight", MoveLeft(GetVNyanParam("v2/eyerightx"))); //MoveLeft(_weights[VRCFTParametersV2.EyeRightX])); // RightEye LookLeft
+                    UpdateVNyan("EyeLookOutLeft", MoveLeft(GetVNyanParam("v2/eyeleftx"))); //MoveLeft(_weights[VRCFTParametersV2.EyeLeftX])); // LeftEye LookLeft
+                    UpdateVNyan("EyeLookOutRight", MoveRight(GetVNyanParam("v2/eyerightx"))); //MoveRight(_weights[VRCFTParametersV2.EyeRightX])); // RightEye LookRight
+                    UpdateVNyan("EyeLookUpLeft", MoveUp(GetVNyanParam("v2/eyelefty"))); //MoveUp(_weights[VRCFTParametersV2.EyeLeftY]));
+                    UpdateVNyan("EyeLookUpRight", MoveUp(GetVNyanParam("v2/eyerighty"))); //MoveUp(_weights[VRCFTParametersV2.EyeRightY]));
+                    UpdateVNyan("EyeSquintLeft", GetVNyanParam("v2/eyesquintleft")); //_weights[VRCFTParametersV2.EyeSquintLeft]);
+                    UpdateVNyan("EyeSquintRight", GetVNyanParam("v2/eyesquintright")); //_weights[VRCFTParametersV2.EyeSquintRight]);
+                    UpdateVNyan("EyeWideLeft", EyeWide(GetVNyanParam("v2/eyelidleft"))); //EyeWide(_weights[VRCFTParametersV2.EyeLidLeft]));
+                    UpdateVNyan("EyeWideRight", EyeWide(GetVNyanParam("v2/eyelidright"))); //EyeWide(_weights[VRCFTParametersV2.EyeLidRight]));
+                }
+                if (EnableMouth) {
+                    UpdateVNyan("JawForward", MoveForward(GetVNyanParam("v2/jawz"))); //MoveForward(_weights[VRCFTParametersV2.JawZ]));
+                    UpdateVNyan("JawLeft", MoveLeft(GetVNyanParam("v2/jawx"))); //MoveLeft(_weights[VRCFTParametersV2.JawX]));
+                    UpdateVNyan("JawOpen", GetVNyanParam("v2/jawopen")); //_weights[VRCFTParametersV2.JawOpen]);
+                    UpdateVNyan("JawRight", MoveRight(GetVNyanParam("v2/jawx"))); //MoveRight(_weights[VRCFTParametersV2.JawX]));
+                    UpdateVNyan("MouthClose", GetVNyanParam("v2/mouthclosed")); //_weights[VRCFTParametersV2.MouthClosed]);
+                    UpdateVNyan("MouthDimpleLeft", GetVNyanParam("v2/mouthdimpleleft")); //_weights[VRCFTParametersV2.MouthDimpleLeft]);
+                    UpdateVNyan("MouthDimpleRight", GetVNyanParam("v2/mouthdimpleright")); //_weights[VRCFTParametersV2.MouthDimpleRight]);
+                    UpdateVNyan("MouthFrownLeft", GetVNyanParam("v2/mouthfrownleft")); //_weights[VRCFTParametersV2.MouthFrownLeft]);
+                    UpdateVNyan("MouthFrownRight", GetVNyanParam("v2/mouthfrownright")); //_weights[VRCFTParametersV2.MouthFrownRight]);
+                    UpdateVNyan("MouthFunnel", GetVNyanParam("v2/lipfunnel")); //_weights[VRCFTParametersV2.LipFunnel]);
+                    UpdateVNyan("MouthLeft", MoveLeft(GetVNyanParam("v2/mouthx"))); //MoveLeft(_weights[VRCFTParametersV2.MouthX]));
+                    UpdateVNyan("MouthLowerDownLeft", GetVNyanParam("v2/mouthlowerdownleft")); //_weights[VRCFTParametersV2.MouthLowerDownLeft]);
+                    UpdateVNyan("MouthLowerDownRight", GetVNyanParam("v2/mouthlowerdownright")); //_weights[VRCFTParametersV2.MouthLowerDownRight]);
+                    UpdateVNyan("MouthPressLeft", GetVNyanParam("v2/mouthpressleft")); //_weights[VRCFTParametersV2.MouthPressLeft]);
+                    UpdateVNyan("MouthPressRight", GetVNyanParam("v2/mouthpressright")); //_weights[VRCFTParametersV2.MouthPressRight]);
+                    UpdateVNyan("MouthPucker", GetVNyanParam("v2/lippucker")); //_weights[VRCFTParametersV2.LipPucker]);
+                    UpdateVNyan("MouthRight", MoveRight(GetVNyanParam("v2/mouthx"))); //MoveRight(_weights[VRCFTParametersV2.MouthX]));
+                    UpdateVNyan("MouthRollUpper", GetVNyanParam("v2/lipsuckupper")); //_weights[VRCFTParametersV2.LipSuckUpper]);
+                    UpdateVNyan("MouthRollLower", GetVNyanParam("v2/lipsucklower")); //_weights[VRCFTParametersV2.LipSuckLower]);
+                    UpdateVNyan("MouthShrugUpper", GetVNyanParam("v2/mouthraiserupper")); //_weights[VRCFTParametersV2.MouthRaiserUpper]);
+                    UpdateVNyan("MouthShrugLower", GetVNyanParam("v2/mouthraiserlower")); //_weights[VRCFTParametersV2.MouthRaiserLower]);
+                    UpdateVNyan("MouthSmileLeft", GetVNyanParam("v2/mouthcornerpullleft")); //_weights[VRCFTParametersV2.MouthCornerPullLeft]);
+                    UpdateVNyan("MouthSmileRight", GetVNyanParam("v2/mouthcornerpullright")); //_weights[VRCFTParametersV2.MouthCornerPullRight]);
+                    UpdateVNyan("MouthStretchLeft", GetVNyanParam("v2/mouthstretchleft")); //_weights[VRCFTParametersV2.MouthStretchLeft]);
+                    UpdateVNyan("MouthStretchRight", GetVNyanParam("v2/mouthstretchright")); //_weights[VRCFTParametersV2.MouthStretchRight]);
+                    UpdateVNyan("MouthUpperUpLeft", GetVNyanParam("v2/mouthupperupleft")); //_weights[VRCFTParametersV2.MouthUpperUpLeft]);
+                    UpdateVNyan("MouthUpperUpRight", GetVNyanParam("v2/mouthupperupright")); //_weights[VRCFTParametersV2.MouthUpperUpRight]);
+                    UpdateVNyan("NoseSneerLeft", GetVNyanParam("v2/nosesneerleft")); //_weights[VRCFTParametersV2.NoseSneerLeft]);
+                    UpdateVNyan("NoseSneerRight", GetVNyanParam("v2/nosesneerright")); //_weights[VRCFTParametersV2.NoseSneerRight]);
+                    UpdateVNyan("TongueOut", GetVNyanParam("v2/tongueout")); //_weights[VRCFTParametersV2.TongueOut]);
+                }
+            } else {
+                Log("WARNING: Update called after deactivate");
             }
         }
     }
