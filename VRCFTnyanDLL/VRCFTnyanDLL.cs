@@ -226,61 +226,61 @@ namespace VRCFTnyanDLL {
         private static void FreeUpBlendshapes() {
             if (EnableEyes) {
                 Log("Freeing up eye blendshapes");
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("BrowDownLeft", 0);
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("BrowDownRight", 0);
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("BrowInnerUp", 0);  
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("BrowOuterUpLeft", 0);  
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("BrowOuterUpRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("CheekPuff", 0);    
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("CheekSquintLeft", 0);  
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("CheekSquintRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeBlinkLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeBlinkRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookDownLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookDownRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookInLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookInRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookOutLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookOutRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookUpLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeLookUpRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeSquintLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeSquintRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeWideLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("EyeWideRight", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("BrowDownLeft");
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("BrowDownRight");
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("BrowInnerUp");  
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("BrowOuterUpLeft");  
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("BrowOuterUpRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("CheekPuff");    
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("CheekSquintLeft");  
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("CheekSquintRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeBlinkLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeBlinkRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeLookDownLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeLookDownRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeLookInLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeLookInRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeLookOutLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeLookOutRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeLookUpLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeLookUpRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeSquintLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeSquintRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeWideLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("EyeWideRight"); 
             }
             if (EnableMouth) {
                 Log("Freeing up mouth blendshapes");
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("JawForward", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("JawLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("JawOpen", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("JawRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthClose", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthDimpleLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthDimpleRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthFrownLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthFrownRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthFunnel", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthLowerDownLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthLowerDownRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthPressLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthPressRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthPucker", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthRollUpper", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthRollLower", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthShrugUpper", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthShrugLower", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthSmileLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthSmileRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthStretchLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthStretchRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthUpperUpLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("MouthUpperUpRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("NoseSneerLeft", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("NoseSneerRight", 0); 
-                VNyanInterface.VNyanInterface.VNyanAvatar.setBlendshapeOverride("TongueOut", 0); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("JawForward"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("JawLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("JawOpen"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("JawRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthClose"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthDimpleLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthDimpleRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthFrownLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthFrownRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthFunnel"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthLowerDownLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthLowerDownRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthPressLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthPressRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthPucker"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthRollUpper"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthRollLower"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthShrugUpper"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthShrugLower"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthSmileLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthSmileRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthStretchLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthStretchRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthUpperUpLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("MouthUpperUpRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("NoseSneerLeft"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("NoseSneerRight"); 
+                VNyanInterface.VNyanInterface.VNyanAvatar.clearBlendshapeOverride("TongueOut"); 
             }
         }
 
@@ -290,7 +290,7 @@ namespace VRCFTnyanDLL {
         }
 
         public void Update() {
-            if (Active) {
+            //if (Active) {
                 if (EnableEyes) {
                     float CheekPuffSuck = GetVNyanParam("CheekPuffSuck");
                     UpdateVNyan("BrowDownLeft", GetVNyanParam("v2/browdownleft"));
@@ -348,9 +348,9 @@ namespace VRCFTnyanDLL {
                     UpdateVNyan("NoseSneerRight", GetVNyanParam("v2/nosesneerright")); //_weights[VRCFTParametersV2.NoseSneerRight]);
                     UpdateVNyan("TongueOut", GetVNyanParam("v2/tongueout")); //_weights[VRCFTParametersV2.TongueOut]);
                 }
-            } else {
-                Log("WARNING: Update called after deactivate");
-            }
+            //} else {
+            //    Log("WARNING: Update called after deactivate");
+            //}
         }
     }
 }
