@@ -25,7 +25,6 @@ namespace VRCFTnyan {
 
         internal static bool EnableEyes = true;
         internal static bool EnableMouth = true;
-        internal static bool HideHelperWindow = true;
         internal static int LogLevel = 1;
         internal static bool Active = false;
         internal static string VRCFTAddress = "127.0.0.1";
@@ -130,19 +129,33 @@ namespace VRCFTnyan {
                         LogLevel = 1;
                         SettingMissing = true;
                     }
-                    if (settings.TryGetValue("HideHelperWindow", out tempSetting)) {
-                        if (bool.Parse(tempSetting)) {
-                            HideHelperWindow = true;
-                            Log("Helper window will be hidden");
-                        } else {
-                            HideHelperWindow = false;
-                            Log("Helper window will be shown");
-                        }
+                    if (settings.TryGetValue("VRCFTAddress", out tempSetting)) {
+                        VRCFTAddress = tempSetting;
+                        Log("VRCFT Address set to: " + VRCFTAddress);
                     } else {
-                        Log("HideHelperWindow setting missing. Defaulting to hidden");
-                        HideHelperWindow = true;
+                        Log("VRCFT Address not found, defaulting to 127.0.0.1");
+                        VRCFTAddress = "127.0.0.1";
                         SettingMissing = true;
                     }
+                    if (settings.TryGetValue("VRCFTPort", out tempSetting)) {
+                        if (int.TryParse(tempSetting, out tempIntSetting)) {
+                            VRCFTPort = tempIntSetting;
+                            Log("VRCFT Port set to: " + LogLevel);
+                        } else {
+                            LogLevel = 9001;
+                            SettingMissing = true;
+                            Log("VRCFT Port not readable, defaulting to 9001");
+                        }
+                    } else {
+                        Log("VRCFT Port not found, defaulting to 9001");
+                        LogLevel = 9001;
+                        SettingMissing = true;
+                    }
+                    // *************** REMOVE THIS BEFORE 1.0 RELEASE ****************
+                    if (settings.TryGetValue("HideHelperWindow", out tempSetting)) {
+                        Log("HideHelperWindow setting found but no-longer relevent. Removing it");
+                        SettingMissing = true;
+                    } 
 
                 } else {
                     Log("No settings file detected, using defaults");
@@ -162,7 +175,8 @@ namespace VRCFTnyan {
             settings["EnableEyes"] = EnableEyes.ToString();
             settings["EnableMouth"] = EnableMouth.ToString();
             settings["LogLevel"] = LogLevel.ToString();
-            settings["HideHelperWindow"] = HideHelperWindow.ToString();
+            settings["VRCFTAddress"] = VRCFTAddress;
+            settings["VRCFTPort"] = VRCFTPort.ToString();
 
             VNyanInterface.VNyanInterface.VNyanSettings.saveSettings(SettingsFileName, settings);
         }

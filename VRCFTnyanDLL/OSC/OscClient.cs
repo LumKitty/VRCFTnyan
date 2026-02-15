@@ -33,14 +33,14 @@ namespace VRCFTnyan.OSC
             }
         }
 
-        public void Send(Bundle bundle)
+        /*public void Send(Bundle bundle)
         {
             using (var stream = new MemoryStream())
             {
                 bundle.Write(stream);
                 Send(Util.GetBuffer(stream), (int)stream.Position);
             }
-        }
+        }*/
 
         private void Send(byte[] data, int size)
         {
