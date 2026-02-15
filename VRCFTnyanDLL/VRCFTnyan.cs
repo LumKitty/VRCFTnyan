@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using UnityEngine;
 using VNyanInterface;
-using static VRCFTnyanDLL.VRC2VMCFunctions;
+using static VRCFTnyan.VRC2VMCFunctions;
+using VRCFTnyan.OSC;
+using System.Net.NetworkInformation;
 
-namespace VRCFTnyanDLL {
+namespace VRCFTnyan {
     public class VRCFTnyan : MonoBehaviour, IVNyanPluginManifest, IButtonClickedHandler, ITriggerHandler {
         public string PluginName { get; } = "VRCFTnyan";
-        public string Version { get; } = "0.4-beta";
+        public string Version { get; } = "0.5-beta";
         public string Title { get; } = "VRC Face Tracking for VNyan";
         public string Author { get; } = "LumKitty";
         public string Website { get; } = "https://lum.uk";
@@ -25,8 +28,10 @@ namespace VRCFTnyanDLL {
         internal static bool HideHelperWindow = true;
         internal static int LogLevel = 1;
         internal static bool Active = false;
-        private static Process ExternalExe;
-        private static ProcessStartInfo StartInfo = new ProcessStartInfo();
+        internal static string VRCFTAddress = "127.0.0.1";
+        internal static int VRCFTPort = 9001;
+        // private static Process ExternalExe;
+        // private static ProcessStartInfo StartInfo = new ProcessStartInfo();
 
         internal static void ErrorHandler(Exception e) {
             VNyanInterface.VNyanInterface.VNyanParameter.setVNyanParameterString("_lum_liv_err", e.ToString());
@@ -47,18 +52,19 @@ namespace VRCFTnyanDLL {
 
         public void InitializePlugin() {
             try {
-                StartInfo.FileName = AppDomain.CurrentDomain.BaseDirectory + "\\Items\\Assemblies\\VRCFTnyan.exe";
-                Log("Looking for external EXE at: " + StartInfo.FileName);
-                if (System.IO.File.Exists(StartInfo.FileName)) {
-                    LoadPluginSettings();
-                    VNyanInterface.VNyanInterface.VNyanUI.registerPluginButton("VRC Face Tracking (beta)", this);
-                    VNyanInterface.VNyanInterface.VNyanTrigger.registerTriggerListener(this);
-                    Log("VRCFTnyan " + Version + " started");
-                    Log("Spawning gameobject: objVRCFTnyan");
-                    objVRCFTnyan = new GameObject("objVRCFTnyan", typeof(VRCFTnyan));
-                    objVRCFTnyan.SetActive(false);
+                //StartInfo.FileName = AppDomain.CurrentDomain.BaseDirectory + "\\Items\\Assemblies\\VRCFTnyan.exe";
+                //Log("Looking for external EXE at: " + StartInfo.FileName);
+                //if (System.IO.File.Exists(StartInfo.FileName)) {
+                LoadPluginSettings();
+                VNyanInterface.VNyanInterface.VNyanUI.registerPluginButton("VRC Face Tracking (beta)", this);
+                VNyanInterface.VNyanInterface.VNyanTrigger.registerTriggerListener(this);
+                Log("VRCFTnyan " + Version + " started");
+                Log("Spawning gameobject: objVRCFTnyan");
+                objVRCFTnyan = new GameObject("objVRCFTnyan", typeof(VRCFTnyan));
+                objVRCFTnyan.SetActive(false);
+                CreateVRCAvatarJSON();
 
-                    StartInfo.UseShellExecute = false;
+                    /* StartInfo.UseShellExecute = false;
                     StartInfo.RedirectStandardInput = true;
                     StartInfo.RedirectStandardOutput = false;
                     StartInfo.RedirectStandardError = false;
@@ -66,7 +72,7 @@ namespace VRCFTnyanDLL {
                     StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
                 } else {
                     Log("EXE not found, disabling plugin");
-                }
+                }*/
 
             } catch (Exception e) {
                 ErrorHandler(e);
@@ -161,15 +167,22 @@ namespace VRCFTnyanDLL {
             VNyanInterface.VNyanInterface.VNyanSettings.saveSettings(SettingsFileName, settings);
         }
 
-        internal async void LaunchEXEHelper(string Param) {
+        /*internal async void LaunchEXEHelper(string Param) {
             ExternalExe = new Process();
             ExternalExe.StartInfo = StartInfo;
             ExternalExe.StartInfo.Arguments = Param;
             ExternalExe.EnableRaisingEvents = true;
             if (LogLevel >= 1) { Log("Start process: " + ExternalExe.StartInfo.FileName + " with parameter: " + ExternalExe.StartInfo.Arguments); }
             ExternalExe.Start();
-        }
+        }*/
 
+        private void CreateVRCAvatarJSON() {
+            string vrcAvatarsFolder = VRCInfo.VRCAvatarsFolder();
+            Log("VRC Avatar Dir: "+vrcAvatarsFolder);
+            Log("Writing JSON to: "+VRCInfo.AvatarFilename);
+            System.IO.File.WriteAllText(Path.Combine(vrcAvatarsFolder, VRCInfo.AvatarFilename), VRCInfo.AvatarJSON);
+        }
+        
         public void triggerCalled(string name, int int1, int int2, int int3, string text1, string text2, string text3) {
             try {
                 if (name.Length > 11) {
@@ -187,7 +200,9 @@ namespace VRCFTnyanDLL {
 
         private void StartTracking() {
             Active = true;
-            LaunchEXEHelper("START");
+            //LaunchEXEHelper("START");
+            using OscClient oc1 = new OscClient(VRCFTAddress, VRCFTPort);
+            oc1.Send(new OSC.Message("/avatar/change", VRCInfo.AvatarID));
             if (EnableEyes || EnableMouth) { objVRCFTnyan.SetActive(true); }
         }
 
@@ -195,7 +210,7 @@ namespace VRCFTnyanDLL {
             Active = false;
             objVRCFTnyan.SetActive(false);
             FreeUpBlendshapes();
-            LaunchEXEHelper("STOP");
+            //LaunchEXEHelper("STOP");
         }
         
         public void pluginButtonClicked() {
@@ -211,7 +226,7 @@ namespace VRCFTnyanDLL {
         }
 
         public void OnApplicationQuit() {
-            if (Active) { LaunchEXEHelper("STOP"); }
+            //if (Active) { LaunchEXEHelper("STOP"); }
         }
 
         private static void UpdateVNyan(string BlendshapeName, float Value) {

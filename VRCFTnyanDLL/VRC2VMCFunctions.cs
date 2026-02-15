@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace VRCFTnyanDLL {
+namespace VRCFTnyan {
     internal static class VRC2VMCFunctions {
         /// <summary>
         /// VRCFTのX系パラメータの値をPerfectSyncのMoveRightの値に変換する。

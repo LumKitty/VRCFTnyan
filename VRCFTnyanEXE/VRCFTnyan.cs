@@ -95,16 +95,16 @@ namespace VRCFTnyan
             using OscClient oc1 = new OscClient(VRCFTAddress, VRCFTPort);
             oc1.Send(new Osc.Message("/avatar/change", id));
 
-            IReadOnlyList<Zeroconf.IZeroconfHost> results = await Zeroconf.ZeroconfResolver.ResolveAsync("_osc._udp.local.");
+            /*IReadOnlyList<Zeroconf.IZeroconfHost> results = await Zeroconf.ZeroconfResolver.ResolveAsync("_osc._udp.local.");
             foreach (var result in results) {
                 foreach (var service in result.Services) {
-                    System.Diagnostics.Debug.WriteLine($"{service.Key} {service.Value.Port}");
+                    Console.WriteLine($"{service.Key} {service.Value.Port}");
                     if (service.Key.StartsWith("VRCFT-")) {
                         using OscClient oc2 = new OscClient(VRCFTAddress, service.Value.Port);
                         oc2.Send(new Osc.Message("/avatar/change", id));
                     }
                 }
-            }
+            }*/
         }
 
         private static void Init() {

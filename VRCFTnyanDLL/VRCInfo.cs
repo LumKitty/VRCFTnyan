@@ -1,73 +1,25 @@
-﻿using Common.Logging.Configuration;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 
-namespace VRCFTnyan
-{
-    internal static class VRChat
-    {
-        public static readonly string VRCDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "LocalLow"), "VRChat", "VRChat");
-        public static readonly string VRCOSCFolder = Path.Combine(VRCDataFolder, "OSC");
-
-        public static void CreateVRCAvatarFile(string filename)
-        {
-            string jsonText = ResourceString(filename);
-            // VRCFTnyan.Log("JSON: " + jsonText);
-            string vrcAvatarsFolder = VRCAvatarsFolder();
-            Console.WriteLine("VRC Avatar dir: "+vrcAvatarsFolder);
-            if (jsonText.Length > 0 && vrcAvatarsFolder.Length > 0)
-            {
-                Console.WriteLine("Writing: JSON to: " + filename);
-                using var writer = new StreamWriter(Path.Combine(vrcAvatarsFolder, filename), false, new UTF8Encoding(true));
-                writer.Write(jsonText);
-            }
-        }
-
-        public static string VRCAvatarsFolder()
-        {
-            foreach (var userFolder in Directory.GetDirectories(VRCOSCFolder))
-            {
+namespace VRCFTnyan {
+    internal static class VRCInfo {
+        internal static readonly string VRCDataFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "LocalLow"), "VRChat", "VRChat");
+        internal static readonly string VRCOSCFolder = Path.Combine(VRCDataFolder, "OSC");
+        
+        internal static string VRCAvatarsFolder() {
+            foreach (var userFolder in Directory.GetDirectories(VRCOSCFolder)) {
                 string avatarsFolder = Path.Combine(userFolder, "Avatars");
-                if (Directory.Exists(avatarsFolder))
-                {
+                if (Directory.Exists(avatarsFolder)) {
                     return avatarsFolder;
                 }
             }
             return "";
         }
-
-        /*public static string ResourceString(string filename)
-        {
-            string resource = $"VRCFTnyan.Resources.{filename}";
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            using (Stream? stream = assembly.GetManifestResourceStream(resource))
-            {
-                if (stream != null)
-                {
-                    using StreamReader reader = new StreamReader(stream);
-                    return reader.ReadToEnd();
-                }
-            }
-            return "";
-        }*/
-
-        // TODO: This is really fucking ugly but it works. Maybe I'll fix it at some point
-
-        public static string ResourceString(string filename) {
-/*            switch (filename) {
-                case "avtr_00000000-0000-0000-0000-000000000000.json" :
-                    return @"
-{
-  ""id"": ""avtr_00000000-0000-0000-0000-000000000000"",
-  ""name"": ""[VRCFTtoVNyan] Tracking is OFF"",
-  ""parameters"": []
-}
-";
-                    break;
-                case "avtr_00000000-0000-0000-0000-000000000001.json":*/
-                    return @"
+        internal const string AvatarID = "avtr_00000000-0000-0000-0000-000000000000";
+        internal const string AvatarFilename = "avtr_00000000-0000-0000-0000-000000000000.json";
+        internal const string AvatarJSON = @"
 {
   ""id"": ""avtr_00000000-0000-0000-0000-000000000000"",
   ""name"": ""[VRCFTtoVNyan] Tracking is ON"",
@@ -382,14 +334,6 @@ namespace VRCFTnyan
     }
   ]
 }
-";/*
-                    break;
-                default:
-                    return "";
-
-            }*/
-
-        }
-
+";
     }
 }

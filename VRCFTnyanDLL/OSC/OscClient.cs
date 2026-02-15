@@ -1,9 +1,8 @@
-﻿using Common.Logging.Configuration;
+﻿//using Common.Logging.Configuration;
 using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using VRCFTnyan.OSC;
 
 namespace VRCFTnyan.OSC
 {
@@ -50,7 +49,7 @@ namespace VRCFTnyan.OSC
                 VRCFTnyan.Log(data);
                 udpClient_.Send(data, size, endPoint_);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 //
             }
