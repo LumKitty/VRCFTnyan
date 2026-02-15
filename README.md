@@ -1,5 +1,5 @@
 # VRC Face Tracking Support for VNyan
-Early beta, use at your own risk. Requires VNyan 1.6.6 or laters
+Early beta, use at your own risk. Requires VNyan 1.6.6 or later
 
 ## Instructions
 1. Install like any other VNyan plugin, by copying to VNyan\Items\Assemblies
@@ -11,7 +11,6 @@ Early beta, use at your own risk. Requires VNyan 1.6.6 or laters
 6. Either:
    * Click the "VRC Face Tracking" button in the VNyan plugins menu OR
    * Call the trigger ```_lum_vrcft_start``` from VNyan's "Call Trigger" node
-8. If it's working you should a DOS console window pop up and start spamming. This will be hidden in the final release, just minimise it :)
 9. Stop by either clicking the button again or call ```_lum_vrcft_stop```
 
 ## Configuration
@@ -23,7 +22,7 @@ After first start, VRCFTnyan.cfg will be created in your VNyan profile. It has t
 Restart VNyan for changes to take effect.
 
 ## Disclaimer
-This is beta code, use it at your own risk. It works for me, but I do not have an eye tracker
+This is beta code, use it at your own risk. It works for me.
 
 ## Credits
 A lot of this code was stolen from [VRCFTtoVMCP](https://github.com/tkns3/VRCFTtoVMCP) by [tkns3](https://github.com/tkns3)
