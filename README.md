@@ -18,7 +18,6 @@ After first start, VRCFTnyan.cfg will be created in your VNyan profile. It has t
 ```EnableEyes``` - Eyes will be tracked from your headset. Set to ```false``` if you do not have an eye tracker  
 ```EnableMouth``` - Mouth will be tracked from your headset. Set to ```false``` if you do not have a mouth tracker  
 ```LogLevel``` - 0: Minimal logging. 1: basic logging. 2: Very spammy logs. 69: Extremely spammy logs  
-```HideHelperWindow``` - Show (or not) the window for the external utility used to initialise VRCFT  
 Restart VNyan for changes to take effect.
 
 ## Disclaimer
